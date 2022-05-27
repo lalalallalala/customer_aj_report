@@ -4,6 +4,10 @@ package com.anjiplus.template.gaea.business.modules.dashboard.controller;
 import com.anji.plus.gaea.annotation.Permission;
 import com.anji.plus.gaea.annotation.log.GaeaAuditLog;
 import com.anji.plus.gaea.bean.ResponseBean;
+import com.anji.plus.gaea.curd.controller.GaeaBaseController;
+import com.anji.plus.gaea.curd.dto.BaseDTO;
+import com.anji.plus.gaea.curd.entity.BaseEntity;
+import com.anji.plus.gaea.curd.service.GaeaBaseService;
 import com.anjiplus.template.gaea.business.modules.dashboard.service.ReportDashboardService;
 import com.anjiplus.template.gaea.business.modules.dashboard.controller.dto.ChartDto;
 import com.anjiplus.template.gaea.business.modules.dashboard.controller.dto.ReportDashboardObjectDto;
@@ -104,5 +108,4 @@ public class ReportDashboardController {
     public ResponseBean share(@Validated @RequestBody ReportShareDto dto) {
         return ResponseBean.builder().data(reportShareService.insertShare(dto)).build();
     }
-
 }

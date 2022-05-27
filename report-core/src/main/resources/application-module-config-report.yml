@@ -1,0 +1,41 @@
+app:
+  module:
+    report:
+      debug: false
+      vue: true
+      rootResource: /META-INF/report-static/
+      webUrlPrefix: /report/static/
+      debugWebUrlPrefix: http://localhost:9528/#/
+      name: "数据大屏"
+      code: report
+      ignore-self: true
+      pages: []
+      menus:
+        - name: 数据管理与可视化
+          code: manager
+          sort: 10
+          children:
+            - name: 数据源管理
+              code: datasource
+              sort: 10
+              path: report/datasource
+            - name: 数据集管理
+              code: dataset
+              sort: 20
+              path: report/resultset
+            - name: 展板与报告管理
+              code: dashboard
+              sort: 30
+              path: report/report
+        - name: 展板与报告
+          code: report
+          sort: 20
+          children:
+            - name: 大屏列表
+              code: dashboard
+              sort: 10
+              path: report/bigscreen
+            - name: 报告列表
+              code: report
+              sort: 20
+              path: report/excelreport

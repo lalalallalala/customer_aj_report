@@ -8,6 +8,9 @@ const whiteList = ['/login', '/aj/**', '/bigscreen/viewer']
 router.beforeEach((to, from, next) => {
 
   NProgress.start()
+  next()
+  return
+
   let token = getToken();
   let gaeaUser = getAccessUser();
   if (token) {

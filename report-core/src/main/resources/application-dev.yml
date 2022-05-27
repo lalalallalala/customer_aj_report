@@ -1,0 +1,31 @@
+server:
+  port: 8080
+# 该文件配置会继承bootstrap.xml，只需要配置数据库等差异配置
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:postgresql://172.18.156.125:5432/aj_report?currentSchema=public
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    #    url: jdbc:mysql://172.18.156.125:3306/aj_report?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    #    username: root
+    #    password: root
+    dynamic:
+      primary: primary
+      datasource:
+        primary:
+          driver-class-name: org.postgresql.Driver
+          password: postgres
+          url: jdbc:postgresql://172.18.156.125:5432/itos?currentSchema=public
+          username: postgres
+        aj-report:
+          url: jdbc:postgresql://172.18.156.125:5432/aj_report?currentSchema=public
+          username: postgres
+          password: postgres
+          driver-class-name: org.postgresql.Driver
+
+  file:
+    dist-path: upload
+    downloadPath: http://127.0.0.1:9095/file/download

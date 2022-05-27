@@ -34,8 +34,8 @@ Vue.component('anji-select', anjiSelect)
 // permission control
 import '@/permission'
 // 按钮权限的指令
-import permission from '@/components/Permission/index'
-Vue.use(permission)
+// import permission from '@/components/Permission/index'
+// Vue.use(permission)
 
 import Avue from '@smallwei/avue';
 import '@smallwei/avue/lib/index.css';

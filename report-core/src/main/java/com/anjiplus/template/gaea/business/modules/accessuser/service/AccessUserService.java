@@ -49,4 +49,6 @@ public interface AccessUserService extends GaeaBaseService<AccessUserParam, Acce
      * @return
      */
     Boolean updatePassword(UpdatePasswordDto dto);
+
+    GaeaUserDto autoLoginForJeef(String loginName, String realName);
 }

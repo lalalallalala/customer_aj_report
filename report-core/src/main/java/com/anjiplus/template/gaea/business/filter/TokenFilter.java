@@ -120,6 +120,7 @@ public class TokenFilter implements Filter {
         }
 
 
+
         //获取token
         String token = request.getHeader("Authorization");
         if (StringUtils.isBlank(token)) {

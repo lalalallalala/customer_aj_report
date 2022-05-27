@@ -5,6 +5,7 @@ import com.anji.plus.gaea.cache.CacheHelper;
 import com.google.common.collect.Maps;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -16,8 +17,13 @@ import java.util.Set;
 
 public class ReportCacheHelper implements CacheHelper, ApplicationContextAware {
 
-    @Autowired
+//    @Autowired
+//    @Qualifier("reportEhCacheCache")
     private Cache cache;
+
+    public ReportCacheHelper(){
+        System.out.println("================ReportCacheHelper================");
+    }
 
     @Override
     public String stringGet(String key) {
@@ -145,6 +151,7 @@ public class ReportCacheHelper implements CacheHelper, ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         /*基于内存的本地缓存*/
-        cache = (Cache) applicationContext.getBean("ehCacheCache");
+//        cache = (Cache) applicationContext.getBean("ehCacheCache");
+        cache = (Cache) applicationContext.getBean("reportEhCacheCache");
     }
 }
