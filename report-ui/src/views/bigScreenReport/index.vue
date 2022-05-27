@@ -79,7 +79,7 @@
           </div>
         </div>
         <div style="font-size: 10px;margin-bottom: 10px;opacity: 0.3">
-          <label >制作人：{{item.createBy}}</label>
+          <label >制作人：{{item.createByName}}</label>
           <label style="float: right">查看次数：{{item.viewCount}}</label>
         </div>
       </el-col>

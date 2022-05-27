@@ -6,15 +6,27 @@ import com.anji.plus.gaea.bean.ResponseBean;
 import com.anji.plus.gaea.curd.controller.GaeaBaseController;
 import com.anji.plus.gaea.curd.service.GaeaBaseService;
 import com.anji.plus.gaea.holder.UserContentHolder;
+import com.anji.plus.gaea.utils.GaeaBeanUtils;
+import com.anjiplus.template.gaea.business.modules.accessuser.dao.entity.AccessUser;
+import com.anjiplus.template.gaea.business.modules.accessuser.service.AccessUserService;
 import com.anjiplus.template.gaea.business.modules.report.controller.dto.ReportDto;
 import com.anjiplus.template.gaea.business.modules.report.controller.param.ReportParam;
 import com.anjiplus.template.gaea.business.modules.report.dao.entity.Report;
 import com.anjiplus.template.gaea.business.modules.report.service.ReportService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * TODO
@@ -44,6 +56,38 @@ public class ReportController extends GaeaBaseController<ReportParam, Report, Re
     @Override
     public ReportDto getDTO() {
         return new ReportDto();
+    }
+
+    @Autowired
+    private AccessUserService accessUserService;
+
+    @GetMapping({"/pageList2"})
+    @Permission(
+            code = "query",
+            name = "查询"
+    )
+    @GaeaAuditLog(
+            pageTitle = "查询"
+    )
+    public ResponseBean pageList(ReportParam param) {
+        IPage<Report> iPage = getService().page(param);
+        List<Report> records = iPage.getRecords();
+        List<ReportDto> list = GaeaBeanUtils.copyList(records, ReportDto.class);
+        this.pageResultHandler(list);
+
+        List<String> createbyList = list.stream().map(k -> k.getCreateBy()).distinct().collect(Collectors.toList());
+        QueryWrapper<AccessUser> accessUserQueryWrapper = new QueryWrapper<>();
+        accessUserQueryWrapper.in("login_name",createbyList);
+        List<AccessUser> users = accessUserService.list(accessUserQueryWrapper);
+        Map<String, String> map = users.stream().collect(Collectors.toMap(AccessUser::getLoginName, AccessUser::getRealName));
+
+        list.stream().forEach(k->{
+            k.setCreateByName("".equals(map.get(k.getCreateBy())) ? "" : map.get(k.getCreateBy()));
+        });
+
+        Page<ReportDto> pageDto = new Page();
+        pageDto.setCurrent(iPage.getCurrent()).setRecords(list).setPages(iPage.getPages()).setTotal(iPage.getTotal()).setSize(iPage.getSize());
+        return this.responseSuccessWithData(pageDto);
     }
 
     @PostMapping("/copy")
@@ -76,5 +120,7 @@ public class ReportController extends GaeaBaseController<ReportParam, Report, Re
         reportService.viewAdd(reportCode);
         return ResponseBean.builder().build();
     }
+
+
 
 }

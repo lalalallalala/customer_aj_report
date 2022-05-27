@@ -71,7 +71,7 @@ export function testTransformSet (data) {
 // report
 export function reportPageList (params) {
   return request({
-    url: '/report/pageList',
+    url: '/report/pageList2',
     method: 'get',
     params,
   })

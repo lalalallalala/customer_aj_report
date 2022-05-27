@@ -58,4 +58,6 @@ public class ReportDto extends GaeaBaseDTO implements Serializable {
 
     private Integer viewCount;
 
+    private String createByName;
+
 }
