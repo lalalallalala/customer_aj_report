@@ -20,9 +20,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
@@ -50,7 +48,7 @@ public class TokenFilter implements Filter {
     /**
      * 跳过token验证和权限验证的url清单
      */
-    @Value("#{'${customer.skip-authenticate-urls:}'.split(',')}")
+    @Value("#{'${app.report.skip-authenticate-urls:}'.split(',')}")
     private List<String> skipAuthenticateUrls;
     private Pattern skipAuthenticatePattern;
 
@@ -66,6 +64,17 @@ public class TokenFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String uri = request.getRequestURI();
+
+        Enumeration<String> headerNames = request.getHeaderNames();
+
+        while (headerNames.hasMoreElements()) {
+            String name = headerNames.nextElement();
+            if(name.equalsIgnoreCase("X-Client-Id")){
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
+
 
         // TODO 暂时先不校验 直接放行
         /*if (true) {
