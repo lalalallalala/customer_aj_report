@@ -1,5 +1,6 @@
 package com.anjiplus.template.gaea.business.modules.report.controller;
 
+import com.anji.plus.gaea.annotation.AccessKey;
 import com.anji.plus.gaea.annotation.Permission;
 import com.anji.plus.gaea.annotation.log.GaeaAuditLog;
 import com.anji.plus.gaea.bean.ResponseBean;
@@ -69,7 +70,7 @@ public class ReportController extends GaeaBaseController<ReportParam, Report, Re
     @GaeaAuditLog(
             pageTitle = "查询"
     )
-    public ResponseBean pageList(ReportParam param) {
+    public ResponseBean pageList2(ReportParam param) {
         IPage<Report> iPage = getService().page(param);
         List<Report> records = iPage.getRecords();
         List<ReportDto> list = GaeaBeanUtils.copyList(records, ReportDto.class);
