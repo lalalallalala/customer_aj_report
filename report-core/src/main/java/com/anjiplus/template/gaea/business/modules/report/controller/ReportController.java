@@ -77,14 +77,14 @@ public class ReportController extends GaeaBaseController<ReportParam, Report, Re
         List<ReportDto> list = GaeaBeanUtils.copyList(records, ReportDto.class);
         this.pageResultHandler(list);
 
-        List<String> createbyList = list.stream().map(k -> k.getCreateBy()).distinct().collect(Collectors.toList());
+        List<String> createbyList = list.stream().map(k -> k.getReportAuthor()).distinct().collect(Collectors.toList());
         QueryWrapper<AccessUser> accessUserQueryWrapper = new QueryWrapper<>();
         accessUserQueryWrapper.in("login_name",createbyList);
         List<AccessUser> users = accessUserService.list(accessUserQueryWrapper);
         Map<String, String> map = users.stream().collect(Collectors.toMap(AccessUser::getLoginName, AccessUser::getRealName));
 
         list.stream().forEach(k->{
-            k.setCreateByName("".equals(map.get(k.getCreateBy())) ? "" : map.get(k.getCreateBy()));
+            k.setCreateByName("".equals(map.get(k.getReportAuthor())) ? k.getReportAuthor() : map.get(k.getReportAuthor()));
         });
 
         Page<ReportDto> pageDto = new Page();

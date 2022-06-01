@@ -97,17 +97,17 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public void downloadStatistics(String reportCode) {
-        //Report report = selectOne("report_code", reportCode);
-        //if (null != report) {
-        //    Long downloadCount = report.getDownloadCount();
-        //    if (null == downloadCount) {
-        //        downloadCount = 0L;
-        //    }else {
-        //        downloadCount++;
-        //    }
-        //    report.setDownloadCount(downloadCount);
-        //    update(report);
-        //}
+        Report report = selectOne("report_code", reportCode);
+        if (null != report) {
+            Long downloadCount = report.getDownloadCount();
+            if (null == downloadCount) {
+                downloadCount = 0L;
+            }else {
+                downloadCount++;
+            }
+            report.setDownloadCount(downloadCount);
+            update(report);
+        }
     }
 
     @Override
@@ -190,11 +190,7 @@ public class ReportServiceImpl implements ReportService {
                 viewCount++;
             }
             report.setViewCount(viewCount);
-
-            UpdateWrapper<Report> updateWrapper = new UpdateWrapper<>();
-            updateWrapper.eq("id",report.getId());
-            updateWrapper.set("view_count",report.getViewCount());
-            reportMapper.update(new Report(),updateWrapper);
+            update(report);
         }
     }
 }
