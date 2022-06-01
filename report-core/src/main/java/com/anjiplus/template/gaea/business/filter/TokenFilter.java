@@ -19,6 +19,7 @@ import org.springframework.util.AntPathMatcher;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -32,7 +33,7 @@ import static com.anji.plus.gaea.constant.GaeaConstant.URL_REPLACEMENT;
  * @date 2021/6/24.
  */
 @Component
-@Order(Integer.MIN_VALUE + 99)
+@Order
 public class TokenFilter implements Filter {
     private static final Pattern PATTERN = Pattern.compile(".*().*");
 
@@ -65,13 +66,15 @@ public class TokenFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String uri = request.getRequestURI();
 
-        Enumeration<String> headerNames = request.getHeaderNames();
+        {
+            Enumeration<String> headerNames = request.getHeaderNames();
 
-        while (headerNames.hasMoreElements()) {
-            String name = headerNames.nextElement();
-            if(name.equalsIgnoreCase("X-Client-Id")){
-                filterChain.doFilter(request, response);
-                return;
+            while (headerNames.hasMoreElements()) {
+                String name = headerNames.nextElement();
+                if (name.equalsIgnoreCase("X-Client-Id")) {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
             }
         }
 
@@ -129,37 +132,43 @@ public class TokenFilter implements Filter {
         }
 
 
-
-        //获取token
-        String token = request.getHeader("Authorization");
-        if (StringUtils.isBlank(token)) {
-            error(response);
-            return;
+        HttpSession session = request.getSession(false);
+        if(session!=null){
+            String account = String.valueOf(session.getAttribute("account"));
+            String userId = String.valueOf(session.getAttribute("userId"));
         }
 
-        // 判断token是否过期
-        String loginName = jwtBean.getUsername(token);
-        String tokenKey = String.format(BusinessConstant.GAEA_SECURITY_LOGIN_TOKEN, loginName);
-        String userKey = String.format(BusinessConstant.GAEA_SECURITY_LOGIN_USER, loginName);
-        if (!cacheHelper.exist(tokenKey)) {
-            error(response);
-            return;
-        }
 
-        String gaeaUserJsonStr = cacheHelper.stringGet(userKey);
-
-        // 判断用户是否有该url的权限
-        if (!BusinessConstant.USER_ADMIN.equals(loginName)) {
-            AtomicBoolean authorizeFlag = authorize(request, gaeaUserJsonStr);
-            if (!authorizeFlag.get()) {
-                authError(response);//无权限
-                return;
-            }
-        }
-
-        // 延长有效期
-        cacheHelper.stringSetExpire(tokenKey, token, 3600);
-        cacheHelper.stringSetExpire(userKey, gaeaUserJsonStr, 3600);
+//        //获取token
+//        String token = request.getHeader("Authorization");
+//        if (StringUtils.isBlank(token)) {
+//            error(response);
+//            return;
+//        }
+//
+//        // 判断token是否过期
+//        String loginName = jwtBean.getUsername(token);
+//        String tokenKey = String.format(BusinessConstant.GAEA_SECURITY_LOGIN_TOKEN, loginName);
+//        String userKey = String.format(BusinessConstant.GAEA_SECURITY_LOGIN_USER, loginName);
+//        if (!cacheHelper.exist(tokenKey)) {
+//            error(response);
+//            return;
+//        }
+//
+//        String gaeaUserJsonStr = cacheHelper.stringGet(userKey);
+//
+//        // 判断用户是否有该url的权限
+//        if (!BusinessConstant.USER_ADMIN.equals(loginName)) {
+//            AtomicBoolean authorizeFlag = authorize(request, gaeaUserJsonStr);
+//            if (!authorizeFlag.get()) {
+//                authError(response);//无权限
+//                return;
+//            }
+//        }
+//
+//        // 延长有效期
+//        cacheHelper.stringSetExpire(tokenKey, token, 3600);
+//        cacheHelper.stringSetExpire(userKey, gaeaUserJsonStr, 3600);
 
 
         //执行

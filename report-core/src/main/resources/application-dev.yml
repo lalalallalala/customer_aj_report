@@ -1,5 +1,21 @@
 server:
   port: 8080
+
+app:
+  file:
+    base: ./workspace
+    upload:
+      path: ${app.file.base}/upload/
+  gaea:
+    filter:
+      order: 2
+  report:
+    filter:
+      order: 1
+    file:
+      dist-path: ${app.file.base}/report/export
+      downloadPath: http://127.0.0.1:9095/file/download
+
 # 该文件配置会继承bootstrap.xml，只需要配置数据库等差异配置
 spring:
   main:
@@ -25,7 +41,3 @@ spring:
           username: postgres
           password: postgres
           driver-class-name: org.postgresql.Driver
-
-  file:
-    dist-path: upload
-    downloadPath: http://127.0.0.1:9095/file/download

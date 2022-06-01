@@ -58,10 +58,10 @@ public class ReportExcelServiceImpl implements ReportExcelService {
     @Autowired
     private ReportMapper reportMapper;
 
-    @Value("${customer.file.dist-path:''}")
+    @Value("${app.report.file.dist-path:''}")
     private String dictPath;
 
-    @Value("${customer.file.downloadPath:''}")
+    @Value("${app.report.file.downloadPath:''}")
     private String fileDownloadPath;
 
     @Autowired

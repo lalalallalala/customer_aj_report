@@ -80,10 +80,10 @@ public class ReportDashboardServiceImpl implements ReportDashboardService, Initi
     @Autowired
     private ReportService reportService;
 
-    @Value("${customer.file.downloadPath:''}")
+    @Value("${app.report.file.downloadPath:''}")
     private String fileDownloadPath;
 
-    @Value("${customer.file.dist-path:''}")
+    @Value("${app.report.file.dist-path:''}")
     private String dictPath;
 
     private final static String ZIP_PATH = "/zip/";

@@ -17,6 +17,7 @@ import com.anjiplus.template.gaea.business.modules.report.service.ReportService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ruijie.jeef.util.security.ShiroUtils;
 import io.swagger.annotations.Api;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.BeanUtils;
@@ -111,7 +112,7 @@ public class ReportController extends GaeaBaseController<ReportParam, Report, Re
         ResponseBean responseBean = this.responseSuccess();
         Report entity = getEntity();
         BeanUtils.copyProperties(dto, entity);
-        entity.setReportAuthor(UserContentHolder.getContext().getUsername());
+        entity.setReportAuthor(ShiroUtils.getCurrentUserId());
         this.getService().insert(entity);
         return responseBean;
     }

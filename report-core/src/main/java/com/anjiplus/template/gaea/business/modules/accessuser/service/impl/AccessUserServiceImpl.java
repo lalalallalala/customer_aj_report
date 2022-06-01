@@ -56,7 +56,7 @@ public class AccessUserServiceImpl implements AccessUserService {
     @Autowired
     private AccessRoleAuthorityMapper accessRoleAuthorityMapper;
 
-    @Value("${customer.user.default.password:'123456'}")
+    @Value("${app.report.user.default.password:'123456'}")
     private String defaultPassword;
 
     @Override
@@ -273,7 +273,7 @@ public class AccessUserServiceImpl implements AccessUserService {
             // 生成用户token
             String uuid = GaeaUtils.UUID();
             token = jwtBean.createToken(loginName, uuid);
-            cacheHelper.stringSetExpire(tokenKey, token, 3600);
+            cacheHelper.stringSetExpire(tokenKey, token, 3600*24);
         }
 
         // 读取用户最新人权限主信息

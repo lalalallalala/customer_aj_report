@@ -18,6 +18,7 @@ import com.anjiplus.template.gaea.business.modules.report.service.ReportService;
 import com.anjiplus.template.gaea.business.modules.reportexcel.dao.entity.ReportExcel;
 import com.anjiplus.template.gaea.business.modules.reportexcel.service.ReportExcelService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,18 +97,17 @@ public class ReportServiceImpl implements ReportService {
      */
     @Override
     public void downloadStatistics(String reportCode) {
-        Report report = selectOne("report_code", reportCode);
-        if (null != report) {
-            Long downloadCount = report.getDownloadCount();
-            if (null == downloadCount) {
-                downloadCount = 0L;
-            }else {
-                downloadCount++;
-            }
-            report.setDownloadCount(downloadCount);
-            update(report);
-        }
-
+        //Report report = selectOne("report_code", reportCode);
+        //if (null != report) {
+        //    Long downloadCount = report.getDownloadCount();
+        //    if (null == downloadCount) {
+        //        downloadCount = 0L;
+        //    }else {
+        //        downloadCount++;
+        //    }
+        //    report.setDownloadCount(downloadCount);
+        //    update(report);
+        //}
     }
 
     @Override
@@ -190,7 +190,11 @@ public class ReportServiceImpl implements ReportService {
                 viewCount++;
             }
             report.setViewCount(viewCount);
-            update(report);
+
+            UpdateWrapper<Report> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("id",report.getId());
+            updateWrapper.set("view_count",report.getViewCount());
+            reportMapper.update(new Report(),updateWrapper);
         }
     }
 }
