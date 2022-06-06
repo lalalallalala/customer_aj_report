@@ -440,6 +440,8 @@ public class DataSourceServiceImpl implements DataSourceService {
             log.error("error",e);
             if (e.getCause() instanceof ClassNotFoundException) {
                 throw BusinessExceptionBuilder.build(ResponseCode.CLASS_NOT_FOUND, e.getCause().getMessage());
+            }else if(e.getSQLState().equals("28P01")){
+                throw BusinessExceptionBuilder.build(ResponseCode.ACCOUNT_PASSWORD_ERROR, e.getMessage());
             } else {
                 throw BusinessExceptionBuilder.build(ResponseCode.DATA_SOURCE_CONNECTION_FAILED, e.getMessage());
             }

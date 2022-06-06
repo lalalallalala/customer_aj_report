@@ -1033,6 +1033,9 @@ public class DemoGroovyHandler implements IGroovyHandler {
     // 数据源下拉切换
     async changeSource2(params) {
       const {code, data} = await queryAllDataTable(params);
+      if(data == null){
+        this.$message.error('数据源已被删除,请重新选择数据源进行保存')
+      }
       if(code != 200){
         return;
       }

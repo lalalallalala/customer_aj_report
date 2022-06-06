@@ -133,6 +133,8 @@ public interface ResponseCode {
     String CLASS_NOT_FOUND = "4010";
     String EXECUTE_GROOVY_ERROR = "4011";
     String ILLEGALITY_SQL_ERROR = "非法语句";
+    String ACCOUNT_PASSWORD_ERROR = "账号密码错误";
+
 
     String REPORT_SHARE_LINK_INVALID = "report.share.link.invalid";
 

@@ -379,6 +379,9 @@ public class DataSetServiceImpl implements DataSetService {
         queryWrapper.eq(DataSource::getSourceCode,sourceCode);
         DataSource dataSource = dataSourceService.selectOne(queryWrapper);
 
+        if(Objects.isNull(dataSource)){
+            return null;
+        }
         DataSourceDto dataSourceDto = new DataSourceDto();
         BeanUtils.copyProperties(dataSource, dataSourceDto);
 
