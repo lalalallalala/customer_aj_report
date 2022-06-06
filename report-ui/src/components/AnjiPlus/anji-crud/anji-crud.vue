@@ -694,28 +694,44 @@ export default {
         // 批量删除选中的行
         ids = this.checkRecords.map(item => item[this.primaryKeyFieldName]);
       }
-      this.$confirm("删除确认", "确认要删除吗?", {
-        type: "warning",
-        confirmButtonClass: "delete_sure",
-        cancelButtonClass: "el-button--danger is-plain"
+
+
+      if(ids.length == 0){
+        this.$message.warning("请选择需要删除的数据")
+        return;
+      }
+      let isDelete = false;
+      ids.forEach(k=>{
+        if(k == '1' || k=='2'){
+          this.$message.warning("批量删除中不能选择系统默认的数据源");
+          isDelete = true;
+          return;
+        }
       })
-        .then(() => {
-          this.option.buttons.delete.api(ids).then(res => {
-            // {code: "200", message: "操作成功", data: true}
-            this.checkRecords = [];
-            // 关闭弹出框时，如果有树，刷新下
-            if (
-              this.hasTreeFieldInQueryForm &&
-              this.$refs.queryFormTree != null
-            ) {
-              this.$refs.queryFormTree.queryData();
-            }
-            this.handleQueryPageList();
-          });
+      if(!isDelete){
+        this.$confirm("删除确认", "确认要删除吗?", {
+          type: "warning",
+          confirmButtonClass: "delete_sure",
+          cancelButtonClass: "el-button--danger is-plain"
         })
-        .catch(e => {
-          e;
-        });
+          .then(() => {
+            this.option.buttons.delete.api(ids).then(res => {
+              // {code: "200", message: "操作成功", data: true}
+              this.checkRecords = [];
+              // 关闭弹出框时，如果有树，刷新下
+              if (
+                this.hasTreeFieldInQueryForm &&
+                this.$refs.queryFormTree != null
+              ) {
+                this.$refs.queryFormTree.queryData();
+              }
+              this.handleQueryPageList();
+            });
+          })
+          .catch(e => {
+            e;
+          });
+      }
     },
 
     // 选择项改变时

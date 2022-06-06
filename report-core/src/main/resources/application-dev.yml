@@ -5,7 +5,7 @@ app:
   file:
     base: ./workspace
     upload:
-      path: ${app.file.base}/upload/
+      path: ${app.file.base}/upload
   gaea:
     filter:
       order: 2
@@ -14,7 +14,7 @@ app:
       order: 1
     file:
       dist-path: ${app.file.base}/report/export
-      downloadPath: http://127.0.0.1:9095/file/download
+      downloadPath: http://localhost:8080/file/download
 
 # 该文件配置会继承bootstrap.xml，只需要配置数据库等差异配置
 spring:

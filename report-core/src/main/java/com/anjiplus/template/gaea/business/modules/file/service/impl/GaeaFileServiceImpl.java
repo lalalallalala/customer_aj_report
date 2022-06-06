@@ -110,7 +110,8 @@ public class GaeaFileServiceImpl implements GaeaFileService {
             gaeaFileMapper.insert(gaeaFile);
 
             //写文件 将文件保存/app/dictPath/upload/下
-            java.io.File dest = new java.io.File(dictPath + newFileName);
+            String property = System.getProperty("user.dir");
+            java.io.File dest = new java.io.File(property + dictPath + newFileName);
             java.io.File parentFile = dest.getParentFile();
             if (!parentFile.exists()) {
                 parentFile.mkdirs();
@@ -169,7 +170,7 @@ public class GaeaFileServiceImpl implements GaeaFileService {
             if (StringUtils.isBlank(filePath)) {
                 throw BusinessExceptionBuilder.build(ResponseCode.FILE_ONT_EXSIT);
             }
-            String filename = filePath.substring(filePath.lastIndexOf(File.separator));
+            String filename = filePath.substring(filePath.lastIndexOf("/"));
             String fileSuffix = filename.substring(filename.lastIndexOf("."));
 
             //根据文件后缀来判断，是显示图片\视频\音频，还是下载文件

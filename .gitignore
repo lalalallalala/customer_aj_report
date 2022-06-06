@@ -4,6 +4,8 @@ target
 *.iml
 /view/flutter/**/gen/*
 **/*.log
-dist
 logs
-build
+**/resources/META-INF
+report-core/cache/.ehcache-diskstore.lock
+report-core/cache/report%0043ache.data
+**/workspace
