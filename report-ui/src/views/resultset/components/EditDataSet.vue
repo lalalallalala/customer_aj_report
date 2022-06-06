@@ -726,6 +726,7 @@ export default {
         this.tableData = [];
         this.itemFilterList = [];
         this.isShowPagination = false;
+        this.sourceTableDisabled = true;
         await this.createEditSetCodingMethods();
       }
     },

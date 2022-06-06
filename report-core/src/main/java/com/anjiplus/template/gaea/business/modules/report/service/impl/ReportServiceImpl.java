@@ -121,6 +121,7 @@ public class ReportServiceImpl implements ReportService {
         Report report = selectOne(dto.getId());
         String reportCode = report.getReportCode();
         Report copyReport = copyReport(report, dto);
+        copyReport.setId(null);
         //复制主表数据
         insert(copyReport);
         String copyReportCode = copyReport.getReportCode();
